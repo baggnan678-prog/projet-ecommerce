@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mon Panier — TechBF</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="Navigation principale">
+  <div class="container">
+    <a href="index.html" class="navbar-logo" aria-label="TechBF — Accueil">
+      Tech<span>BF</span>
+    </a>
+    <button class="burger" id="burger" aria-controls="nav-links" aria-expanded="false" aria-label="Ouvrir le menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links" role="list">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="catalogue.html">Catalogue</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li>
+        <a href="panier.html" class="nav-panier active" aria-label="Panier" aria-current="page">
+          <span class="panier-icone">Panier</span>
+          <span class="panier-compteur" aria-live="polite">0</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <header class="panier-header">
+    <div class="container">
+      <h1>Mon panier — <span id="nb-articles" aria-live="polite">0 article</span></h1>
+      <button class="btn btn--danger" id="btn-vider" aria-label="Vider tout le panier">Vider le panier</button>
+    </div>
+  </header>
+
+  <div class="panier-vide" id="panier-vide" role="status" aria-live="polite">
+    <h2>Votre panier est vide</h2>
+    <p>Ajoutez des produits depuis notre catalogue.</p>
+    <a href="catalogue.html" class="btn btn--primaire">Aller au catalogue</a>
+  </div>
+
+  <div id="panier-plein" style="display:none">
+    <div class="container">
+      <div class="panier-layout">
+        <div>
+          <div class="panier-tableau-wrap">
+            <table class="panier-tableau" aria-label="Articles dans le panier">
+              <thead>
+                <tr>
+                  <th scope="col">Produit</th>
+                  <th scope="col">Prix unitaire</th>
+                  <th scope="col">Quantité</th>
+                  <th scope="col">Sous-total</th>
+                  <th scope="col"><span class="sr-only">Supprimer</span></th>
+                </tr>
+              </thead>
+              <tbody id="panier-corps"></tbody>
+            </table>
+          </div>
+          <div style="margin-top:1rem">
+            <a href="catalogue.html" class="btn btn--secondaire">Continuer les achats</a>
+          </div>
+        </div>
+
+        <aside class="resume-commande" aria-label="Résumé de la commande">
+          <h3>Résumé</h3>
+          <div class="resume-ligne">
+            <span>Sous-total</span>
+            <span id="sous-total" aria-live="polite">0 FCFA</span>
+          </div>
+          <div class="resume-ligne">
+            <span>Frais de livraison</span>
+            <span id="frais-livraison" aria-live="polite">5 000 FCFA</span>
+          </div>
+          <div class="resume-ligne resume-ligne--total">
+            <span>Total</span>
+            <span id="total-general" aria-live="polite">0 FCFA</span>
+          </div>
+          <div class="resume-actions">
+            <button class="btn btn--primaire" id="btn-commander">Commander</button>
+          </div>
+          <p style="font-size:.8rem;color:var(--couleur-texte-leger);margin-top:.75rem;text-align:center">
+            Paiement sécurisé · Livraison à Ouagadougou
+          </p>
+        </aside>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="modal" id="modal-suppression" role="dialog" aria-modal="true" aria-labelledby="modal-suppr-titre" aria-hidden="true">
+  <div class="modal-boite">
+    <h3 id="modal-suppr-titre">Supprimer cet article ?</h3>
+    <p>Cet article sera retiré de votre panier.</p>
+    <div class="modal-actions">
+      <button class="btn btn--danger" id="modal-suppr-confirmer" data-focus>Oui, supprimer</button>
+      <button class="btn btn--secondaire" id="modal-suppr-annuler">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal-vider" role="dialog" aria-modal="true" aria-labelledby="modal-vider-titre" aria-hidden="true">
+  <div class="modal-boite">
+    <h3 id="modal-vider-titre">Vider le panier ?</h3>
+    <p>Tous les articles seront supprimés. Cette action est irréversible.</p>
+    <div class="modal-actions">
+      <button class="btn btn--danger" id="modal-vider-confirmer">Oui, vider</button>
+      <button class="btn btn--secondaire" id="modal-vider-annuler">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-grille">
+      <div class="footer-col">
+        <div class="footer-logo"><strong>TechBF</strong></div>
+        <p>Votre boutique high-tech de confiance à Ouagadougou.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <a href="index.html">Accueil</a>
+        <a href="catalogue.html">Catalogue</a>
+        <a href="contact.html">Commander</a>
+      </div>
+      <div class="footer-col">
+        <h4>Catégories</h4>
+        <a href="catalogue.html?categorie=informatique">Informatique</a>
+        <a href="catalogue.html?categorie=telephonie">Téléphonie</a>
+        <a href="catalogue.html?categorie=audio">Audio</a>
+        <a href="catalogue.html?categorie=accessoires">Accessoires</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <p>Ouagadougou, Burkina Faso</p>
+        <p>+226 XX XX XX XX</p>
+        <p>contact@techbf.bf</p>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bas">
+    <div class="container">© 2026 TechBF — Tous droits réservés</div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script src="js/panier.js"></script>
+</body>
+</html>

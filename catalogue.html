@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catalogue — TechBF</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="Navigation principale">
+  <div class="container">
+    <a href="index.html" class="navbar-logo" aria-label="TechBF — Accueil">
+      Tech<span>BF</span>
+    </a>
+    <button class="burger" id="burger" aria-controls="nav-links" aria-expanded="false" aria-label="Ouvrir le menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links" role="list">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="catalogue.html" class="active">Catalogue</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li>
+        <a href="panier.html" class="nav-panier" aria-label="Panier">
+          <span class="panier-icone">Panier</span>
+          <span class="panier-compteur" aria-live="polite">0</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <header class="catalogue-header">
+    <div class="container">
+      <h1>Notre catalogue</h1>
+      <p style="color:rgba(255,255,255,.7);margin-top:.5rem">Tous nos produits high-tech disponibles</p>
+    </div>
+  </header>
+
+  <div class="barre-filtres" role="search" aria-label="Filtres et recherche">
+    <div class="container">
+      <div class="filtres-internes">
+        <div class="recherche-wrap">
+          <label for="recherche" class="sr-only">Rechercher un produit</label>
+          <input type="search" id="recherche" placeholder="Rechercher un produit…" autocomplete="off" aria-label="Rechercher un produit">
+          <button class="recherche-icone" id="effacer-recherche" aria-label="Effacer la recherche" title="Effacer">×</button>
+        </div>
+        <div class="filtres-cats" role="group" aria-label="Filtrer par catégorie">
+          <button class="btn-filtre actif" data-categorie="tous" aria-pressed="true">Tous</button>
+          <button class="btn-filtre" data-categorie="informatique" aria-pressed="false">Informatique</button>
+          <button class="btn-filtre" data-categorie="telephonie" aria-pressed="false">Téléphonie</button>
+          <button class="btn-filtre" data-categorie="audio" aria-pressed="false">Audio</button>
+          <button class="btn-filtre" data-categorie="accessoires" aria-pressed="false">Accessoires</button>
+        </div>
+      </div>
+      <div class="filtres-bas">
+        <div class="filtres-tri" role="group" aria-label="Trier par prix">
+          <button class="btn-filtre" data-tri="asc" aria-pressed="false">Prix croissant</button>
+          <button class="btn-filtre" data-tri="desc" aria-pressed="false">Prix décroissant</button>
+        </div>
+        <p id="compteur-resultats" aria-live="polite" aria-atomic="true">12 produit(s) trouvé(s)</p>
+      </div>
+    </div>
+  </div>
+
+  <section class="catalogue-contenu" aria-labelledby="titre-catalogue">
+    <div class="container">
+      <h2 id="titre-catalogue" class="sr-only">Liste des produits</h2>
+      <div class="grille-produits" id="grille-produits" aria-live="polite" aria-label="Produits"></div>
+      <div class="message-vide" id="message-vide" role="status">
+        <span class="icone-vide" aria-hidden="true"></span>
+        <p>Aucun produit trouvé pour cette recherche.</p>
+        <button class="btn btn--secondaire" onclick="document.getElementById('recherche').value=''; document.getElementById('recherche').dispatchEvent(new Event('input'));">Réinitialiser la recherche</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-grille">
+      <div class="footer-col">
+        <div class="footer-logo"><strong>TechBF</strong></div>
+        <p>Votre boutique high-tech de confiance à Ouagadougou.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <a href="index.html">Accueil</a>
+        <a href="catalogue.html">Catalogue</a>
+        <a href="panier.html">Mon panier</a>
+        <a href="contact.html">Commander</a>
+      </div>
+      <div class="footer-col">
+        <h4>Catégories</h4>
+        <a href="catalogue.html?categorie=informatique">Informatique</a>
+        <a href="catalogue.html?categorie=telephonie">Téléphonie</a>
+        <a href="catalogue.html?categorie=audio">Audio</a>
+        <a href="catalogue.html?categorie=accessoires">Accessoires</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <p>Ouagadougou, Burkina Faso</p>
+        <p>+226 XX XX XX XX</p>
+        <p>contact@techbf.bf</p>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bas">
+    <div class="container">© 2026 TechBF — Tous droits réservés</div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script src="js/catalogue.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const cat = params.get('categorie');
+    if (cat) {
+      const btn = document.querySelector(`[data-categorie="${cat}"]`);
+      if (btn) {
+        document.querySelectorAll('[data-categorie]').forEach(b => {
+          b.classList.remove('actif');
+          b.setAttribute('aria-pressed', 'false');
+        });
+        btn.classList.add('actif');
+        btn.setAttribute('aria-pressed', 'true');
+        categorieActive = cat;
+        filtrerEtAfficher();
+      }
+    }
+  });
+</script>
+</body>
+</html>

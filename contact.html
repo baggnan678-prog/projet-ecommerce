@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Commander — TechBF</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="Navigation principale">
+  <div class="container">
+    <a href="index.html" class="navbar-logo" aria-label="TechBF — Accueil">
+      Tech<span>BF</span>
+    </a>
+    <button class="burger" id="burger" aria-controls="nav-links" aria-expanded="false" aria-label="Ouvrir le menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links" role="list">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="catalogue.html">Catalogue</a></li>
+      <li><a href="contact.html" class="active">Contact</a></li>
+      <li>
+        <a href="panier.html" class="nav-panier" aria-label="Panier">
+          <span class="panier-icone">Panier</span>
+          <span class="panier-compteur" aria-live="polite">0</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <header class="contact-header">
+    <div class="container">
+      <h1>Passer votre commande</h1>
+      <p style="color:rgba(255,255,255,.7);margin-top:.5rem">Remplissez le formulaire ci-dessous pour finaliser votre achat</p>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="contact-layout">
+
+      <div class="formulaire-card">
+        <h2>Informations de livraison</h2>
+
+        <form id="form-commande" novalidate aria-label="Formulaire de commande">
+          <div class="form-grille">
+
+            <div class="form-groupe">
+              <label for="prenom">Prénom <span aria-hidden="true">*</span></label>
+              <input type="text" id="prenom" name="prenom" required autocomplete="given-name" placeholder="Ex : Moussa" aria-describedby="prenom-err">
+              <span class="message-erreur" id="prenom-err" role="alert">Le prénom est obligatoire.</span>
+            </div>
+
+            <div class="form-groupe">
+              <label for="nom">Nom <span aria-hidden="true">*</span></label>
+              <input type="text" id="nom" name="nom" required autocomplete="family-name" placeholder="Ex : Kaboré" aria-describedby="nom-err">
+              <span class="message-erreur" id="nom-err" role="alert">Le nom est obligatoire.</span>
+            </div>
+
+            <div class="form-groupe">
+              <label for="email">Email <span aria-hidden="true">*</span></label>
+              <input type="email" id="email" name="email" required autocomplete="email" placeholder="Ex : moussa@email.com" aria-describedby="email-err">
+              <span class="message-erreur" id="email-err" role="alert">Veuillez saisir un email valide.</span>
+            </div>
+
+            <div class="form-groupe">
+              <label for="telephone">Téléphone <span aria-hidden="true">*</span></label>
+              <input type="tel" id="telephone" name="telephone" required autocomplete="tel" placeholder="Ex : 70123456" maxlength="10" aria-describedby="tel-err">
+              <span class="message-erreur" id="tel-err" role="alert">Le téléphone doit contenir entre 8 et 10 chiffres.</span>
+            </div>
+
+            <div class="form-groupe form-colonne-pleine">
+              <label for="adresse">Adresse de livraison <span aria-hidden="true">*</span></label>
+              <input type="text" id="adresse" name="adresse" required autocomplete="street-address" placeholder="Ex : Secteur 15, Rue 12.45, Ouagadougou" aria-describedby="adresse-err">
+              <span class="message-erreur" id="adresse-err" role="alert">L'adresse de livraison est obligatoire.</span>
+            </div>
+
+            <div class="form-groupe form-colonne-pleine">
+              <fieldset style="border:none;padding:0">
+                <legend style="font-weight:600;font-size:.9rem;margin-bottom:.75rem">Mode de paiement <span aria-hidden="true">*</span></legend>
+                <div class="radio-groupe">
+                  <label class="radio-option">
+                    <input type="radio" name="paiement" value="cash" required checked>
+                    <span>Paiement à la livraison (cash)</span>
+                  </label>
+                  <label class="radio-option">
+                    <input type="radio" name="paiement" value="orange-money">
+                    <span>Orange Money</span>
+                  </label>
+                  <label class="radio-option">
+                    <input type="radio" name="paiement" value="moov-money">
+                    <span>Moov Money</span>
+                  </label>
+                  <label class="radio-option">
+                    <input type="radio" name="paiement" value="coris-money">
+                    <span>Coris Money</span>
+                  </label>
+                </div>
+              </fieldset>
+            </div>
+
+            <div class="form-groupe form-colonne-pleine form-submit">
+              <button type="submit" class="btn btn--primaire" id="btn-soumettre">
+                Confirmer la commande
+              </button>
+            </div>
+
+          </div>
+        </form>
+
+        <div class="alert-succes" id="alert-succes" role="alert" aria-live="assertive">
+          <h3>Commande confirmée !</h3>
+          <p>Merci pour votre commande. Notre équipe vous contactera sous 24h pour confirmer la livraison.</p>
+          <a href="catalogue.html" class="btn btn--primaire">Continuer mes achats</a>
+        </div>
+      </div>
+
+      <aside class="recap-panier" aria-label="Récapitulatif de votre commande">
+        <h3>Votre commande</h3>
+        <div id="recap-articles" aria-live="polite"></div>
+        <div class="recap-total">
+          <span>Total</span>
+          <span id="recap-total">0 FCFA</span>
+        </div>
+        <p style="font-size:.8rem;color:var(--couleur-texte-leger);margin-top:1rem;text-align:center">
+          Vos données sont sécurisées
+        </p>
+      </aside>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-grille">
+      <div class="footer-col">
+        <div class="footer-logo"><strong>TechBF</strong></div>
+        <p>Votre boutique high-tech de confiance à Ouagadougou.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <a href="index.html">Accueil</a>
+        <a href="catalogue.html">Catalogue</a>
+        <a href="panier.html">Mon panier</a>
+      </div>
+      <div class="footer-col">
+        <h4>Catégories</h4>
+        <a href="catalogue.html?categorie=informatique">Informatique</a>
+        <a href="catalogue.html?categorie=telephonie">Téléphonie</a>
+        <a href="catalogue.html?categorie=audio">Audio</a>
+        <a href="catalogue.html?categorie=accessoires">Accessoires</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <p>Ouagadougou, Burkina Faso</p>
+        <p>+226 XX XX XX XX</p>
+        <p>contact@techbf.bf</p>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bas">
+    <div class="container">© 2026 TechBF — Tous droits réservés</div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+function afficherRecap() {
+  const panier = getPanier();
+  const conteneur = document.getElementById('recap-articles');
+  const elTotal = document.getElementById('recap-total');
+
+  if (!conteneur) return;
+
+  if (panier.length === 0) {
+    conteneur.innerHTML = '<p style="color:var(--couleur-texte-leger);font-size:.9rem">Votre panier est vide.</p>';
+    if (elTotal) elTotal.textContent = '0 FCFA';
+    return;
+  }
+
+  conteneur.innerHTML = '';
+  let total = 0;
+
+  panier.forEach(item => {
+    const sousTotal = item.prix * item.quantite;
+    total += sousTotal;
+    const div = document.createElement('div');
+    div.className = 'recap-article';
+    div.innerHTML = `
+      <span>${item.nom} ×${item.quantite}</span>
+      <span>${formaterPrix(sousTotal)}</span>
+    `;
+    conteneur.appendChild(div);
+  });
+
+  const divLiv = document.createElement('div');
+  divLiv.className = 'recap-article';
+  divLiv.innerHTML = `<span>Frais de livraison</span><span>${formaterPrix(5000)}</span>`;
+  conteneur.appendChild(divLiv);
+
+  if (elTotal) elTotal.textContent = formaterPrix(total + 5000);
+}
+
+function validerChamp(input, regex, msgErreurId) {
+  const erreur = document.getElementById(msgErreurId);
+  const valide = input.value.trim() !== '' && (regex ? regex.test(input.value.trim()) : true);
+  input.classList.toggle('valide', valide);
+  input.classList.toggle('erreur', !valide);
+  if (erreur) erreur.classList.toggle('visible', !valide);
+  return valide;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  afficherRecap();
+
+  const form = document.getElementById('form-commande');
+
+  document.getElementById('prenom').addEventListener('blur', function() { validerChamp(this, null, 'prenom-err'); });
+  document.getElementById('nom').addEventListener('blur', function() { validerChamp(this, null, 'nom-err'); });
+  document.getElementById('email').addEventListener('blur', function() { validerChamp(this, /^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'email-err'); });
+  document.getElementById('telephone').addEventListener('blur', function() { validerChamp(this, /^\d{8,10}$/, 'tel-err'); });
+  document.getElementById('adresse').addEventListener('blur', function() { validerChamp(this, null, 'adresse-err'); });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const champValide = [
+      validerChamp(document.getElementById('prenom'), null, 'prenom-err'),
+      validerChamp(document.getElementById('nom'), null, 'nom-err'),
+      validerChamp(document.getElementById('email'), /^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'email-err'),
+      validerChamp(document.getElementById('telephone'), /^\d{8,10}$/, 'tel-err'),
+      validerChamp(document.getElementById('adresse'), null, 'adresse-err'),
+    ];
+
+    if (champValide.every(Boolean)) {
+      sauvegarderPanier([]);
+      mettreAJourCompteurNavbar();
+      form.style.display = 'none';
+      document.getElementById('alert-succes').classList.add('visible');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      form.querySelector('.erreur')?.focus();
+    }
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechBF — Boutique High-Tech Burkina Faso</title>
+  <meta name="description" content="TechBF — Votre boutique d'électronique et d'accessoires tech à Ouagadougou.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="Navigation principale">
+  <div class="container">
+    <a href="index.html" class="navbar-logo" aria-label="TechBF — Accueil">
+      Tech<span>BF</span>
+    </a>
+    <button class="burger" id="burger" aria-controls="nav-links" aria-expanded="false" aria-label="Ouvrir le menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links" role="list">
+      <li><a href="index.html" class="active">Accueil</a></li>
+      <li><a href="catalogue.html">Catalogue</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li>
+        <a href="panier.html" class="nav-panier" aria-label="Panier">
+          <span class="panier-icone">Panier</span>
+          <span class="panier-compteur" aria-live="polite" aria-label="Articles dans le panier">0</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <section class="hero" aria-labelledby="hero-titre">
+    <div class="hero-decor hero-decor--1" aria-hidden="true"></div>
+    <div class="hero-decor hero-decor--2" aria-hidden="true"></div>
+    <div class="hero-contenu">
+      <div class="hero-badge" aria-hidden="true">Livraison à Ouagadougou</div>
+      <h1 id="hero-titre">La tech au cœur du <span>Burkina</span></h1>
+      <p>Smartphones, ordinateurs, accessoires — des produits de qualité aux meilleurs prix FCFA.</p>
+      <div class="hero-actions">
+        <a href="catalogue.html" class="btn btn--primaire">Voir le catalogue</a>
+        <a href="#categories" class="btn btn--ghost">Nos catégories</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="categories" aria-labelledby="titre-cats">
+    <div class="container">
+      <div class="section-titre">
+        <h2 id="titre-cats">Nos catégories</h2>
+        <p>Tout ce dont vous avez besoin en un seul endroit</p>
+      </div>
+      <ul class="grille-categories" role="list">
+        <li>
+          <a href="catalogue.html?categorie=informatique" class="card-categorie">
+            <div class="cat-img-wrap"><img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=200&q=80" alt="" aria-hidden="true" loading="lazy"></div>
+            <span class="cat-nom">Informatique</span>
+          </a>
+        </li>
+        <li>
+          <a href="catalogue.html?categorie=telephonie" class="card-categorie">
+            <div class="cat-img-wrap"><img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=200&q=80" alt="" aria-hidden="true" loading="lazy"></div>
+            <span class="cat-nom">Téléphonie</span>
+          </a>
+        </li>
+        <li>
+          <a href="catalogue.html?categorie=audio" class="card-categorie">
+            <div class="cat-img-wrap"><img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&q=80" alt="" aria-hidden="true" loading="lazy"></div>
+            <span class="cat-nom">Audio</span>
+          </a>
+        </li>
+        <li>
+          <a href="catalogue.html?categorie=accessoires" class="card-categorie">
+            <div class="cat-img-wrap"><img src="https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=200&q=80" alt="" aria-hidden="true" loading="lazy"></div>
+            <span class="cat-nom">Accessoires</span>
+          </a>
+        </li>
+        <li>
+          <a href="catalogue.html?categorie=informatique" class="card-categorie">
+            <div class="cat-img-wrap"><img src="https://images.unsplash.com/photo-1625275733-c74f5f82d548?w=200&q=80" alt="" aria-hidden="true" loading="lazy"></div>
+            <span class="cat-nom">Caméras</span>
+          </a>
+        </li>
+        <li>
+          <a href="catalogue.html" class="card-categorie">
+            <div class="cat-img-wrap"><img src="https://images.unsplash.com/photo-1601524909162-ae8725290836?w=200&q=80" alt="" aria-hidden="true" loading="lazy"></div>
+            <span class="cat-nom">Câbles &amp; Chargeurs</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--grise" aria-labelledby="titre-vedettes">
+    <div class="container">
+      <div class="section-entete">
+        <h2 id="titre-vedettes">Produits vedettes</h2>
+        <a href="catalogue.html" class="btn btn--secondaire">Voir tout</a>
+      </div>
+      <div class="grille-produits" id="grille-vedettes" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="bandeau-promo" aria-labelledby="titre-promo">
+    <div class="container">
+      <h2 id="titre-promo">Offre spéciale ce mois-ci !</h2>
+      <p>Jusqu'à -20% sur une sélection de produits. Offre limitée, profitez-en maintenant.</p>
+      <a href="catalogue.html" class="btn btn--ghost">Voir les promotions</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-grille">
+      <div class="footer-col">
+        <div class="footer-logo"><strong>TechBF</strong></div>
+        <p>Votre boutique high-tech de confiance à Ouagadougou, Burkina Faso.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <a href="index.html">Accueil</a>
+        <a href="catalogue.html">Catalogue</a>
+        <a href="panier.html">Mon panier</a>
+        <a href="contact.html">Commander</a>
+      </div>
+      <div class="footer-col">
+        <h4>Catégories</h4>
+        <a href="catalogue.html?categorie=informatique">Informatique</a>
+        <a href="catalogue.html?categorie=telephonie">Téléphonie</a>
+        <a href="catalogue.html?categorie=audio">Audio</a>
+        <a href="catalogue.html?categorie=accessoires">Accessoires</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <p>Ouagadougou, Burkina Faso</p>
+        <p>+226 XX XX XX XX</p>
+        <p>contact@techbf.bf</p>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bas">
+    <div class="container">© 2026 TechBF — Tous droits réservés</div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const vedettes = [...PRODUITS].sort((a, b) => (b.badge ? 1 : 0) - (a.badge ? 1 : 0)).slice(0, 6);
+    const grille = document.getElementById('grille-vedettes');
+    vedettes.forEach(p => grille.appendChild(genererCardProduit(p)));
+  });
+</script>
+</body>
+</html>

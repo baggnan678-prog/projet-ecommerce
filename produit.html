@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Détail produit — TechBF</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="Navigation principale">
+  <div class="container">
+    <a href="index.html" class="navbar-logo" aria-label="TechBF — Accueil">
+      Tech<span>BF</span>
+    </a>
+    <button class="burger" id="burger" aria-controls="nav-links" aria-expanded="false" aria-label="Ouvrir le menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links" role="list">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="catalogue.html">Catalogue</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li>
+        <a href="panier.html" class="nav-panier" aria-label="Panier">
+          <span class="panier-icone">Panier</span>
+          <span class="panier-compteur" aria-live="polite">0</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Fil d'Ariane">
+      <a href="index.html">Accueil</a>
+      <span class="breadcrumb-sep" aria-hidden="true"> › </span>
+      <a href="catalogue.html">Catalogue</a>
+      <span class="breadcrumb-sep" aria-hidden="true"> › </span>
+      <span id="breadcrumb-nom" aria-current="page">Produit</span>
+    </nav>
+
+    <div class="produit-zone" id="produit-zone">
+      <div class="produit-image-wrap">
+        <div class="produit-img-grande" id="produit-img-grande"></div>
+      </div>
+
+      <div class="produit-info">
+        <div class="produit-badges" id="produit-badges"></div>
+        <h1 class="produit-nom" id="produit-nom">Chargement…</h1>
+        <div class="produit-prix-wrap">
+          <span class="produit-prix" id="produit-prix"></span>
+          <span class="produit-ancien-prix" id="produit-ancien-prix"></span>
+        </div>
+        <p class="produit-description" id="produit-description"></p>
+
+        <div class="quantite-wrap" aria-label="Sélectionner la quantité">
+          <span style="font-weight:600">Quantité :</span>
+          <div class="quantite-ctrl">
+            <button class="btn-quantite" id="btn-moins" aria-label="Diminuer la quantité">−</button>
+            <span class="quantite-val" id="quantite-val" aria-live="polite">1</span>
+            <button class="btn-quantite" id="btn-plus" aria-label="Augmenter la quantité">+</button>
+          </div>
+        </div>
+
+        <button class="btn btn--primaire btn--panier" id="btn-ajouter-panier" style="margin-top:.5rem">
+          Ajouter au panier
+        </button>
+      </div>
+    </div>
+
+    <section aria-label="Informations produit" style="margin-bottom:3rem">
+      <div class="produit-tabs" role="tablist" aria-label="Détails du produit">
+        <button class="tab-btn actif" role="tab" aria-selected="true"  aria-controls="tab-description"  id="t-desc">Description</button>
+        <button class="tab-btn"       role="tab" aria-selected="false" aria-controls="tab-specs"        id="t-specs">Caractéristiques</button>
+        <button class="tab-btn"       role="tab" aria-selected="false" aria-controls="tab-avis"         id="t-avis">Avis clients (3)</button>
+      </div>
+
+      <div class="tab-panneau actif" id="tab-description" role="tabpanel" aria-labelledby="t-desc">
+        <p id="tab-desc-texte" style="color:var(--couleur-texte-leger)"></p>
+      </div>
+
+      <div class="tab-panneau" id="tab-specs" role="tabpanel" aria-labelledby="t-specs">
+        <table class="specs-table" id="specs-table" aria-label="Caractéristiques techniques">
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="tab-panneau" id="tab-avis" role="tabpanel" aria-labelledby="t-avis">
+        <div class="avis-liste">
+          <article class="avis-item">
+            <div class="avis-header">
+              <span class="avis-auteur">Moussa K.</span>
+              <span class="avis-etoiles" aria-label="5 étoiles sur 5">5/5</span>
+            </div>
+            <p class="avis-texte">Excellent produit, livraison rapide à Ouagadougou. Je recommande vivement TechBF !</p>
+          </article>
+          <article class="avis-item">
+            <div class="avis-header">
+              <span class="avis-auteur">Fatimata D.</span>
+              <span class="avis-etoiles" aria-label="4 étoiles sur 5">4/5</span>
+            </div>
+            <p class="avis-texte">Produit conforme à la description. Bon rapport qualité/prix pour le marché burkinabè.</p>
+          </article>
+          <article class="avis-item">
+            <div class="avis-header">
+              <span class="avis-auteur">Ibrahim S.</span>
+              <span class="avis-etoiles" aria-label="5 étoiles sur 5">5/5</span>
+            </div>
+            <p class="avis-texte">TechBF est ma boutique de référence. Service client réactif et produits authentiques.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="titre-faq" style="margin-bottom:3rem">
+      <h2 id="titre-faq" style="margin-bottom:1.5rem">Questions fréquentes</h2>
+      <div class="accordeon" id="accordeon-faq">
+        <div class="accordeon-item">
+          <button class="accordeon-btn" aria-expanded="false" aria-controls="faq-1">
+            Quelle est la garantie sur ce produit ?
+            <span class="icone" aria-hidden="true">+</span>
+          </button>
+          <div class="accordeon-contenu" id="faq-1" role="region">
+            <p>Tous nos produits sont garantis 12 mois pièces et main-d'œuvre. En cas de panne, contactez-nous et nous prendrons en charge la réparation ou le remplacement selon les conditions du fabricant.</p>
+          </div>
+        </div>
+        <div class="accordeon-item">
+          <button class="accordeon-btn" aria-expanded="false" aria-controls="faq-2">
+            Livrez-vous partout au Burkina Faso ?
+            <span class="icone" aria-hidden="true">+</span>
+          </button>
+          <div class="accordeon-contenu" id="faq-2" role="region">
+            <p>Nous livrons principalement à Ouagadougou et dans les villes principales (Bobo-Dioulasso, Koudougou, Banfora). Les frais de livraison sont de 5 000 FCFA en zone urbaine. Contactez-nous pour d'autres destinations.</p>
+          </div>
+        </div>
+        <div class="accordeon-item">
+          <button class="accordeon-btn" aria-expanded="false" aria-controls="faq-3">
+            Quels sont les modes de paiement acceptés ?
+            <span class="icone" aria-hidden="true">+</span>
+          </button>
+          <div class="accordeon-contenu" id="faq-3" role="region">
+            <p>Nous acceptons le paiement à la livraison (cash), les virements Orange Money, Moov Money et Coris Money. Le paiement par carte bancaire est disponible sur demande.</p>
+          </div>
+        </div>
+        <div class="accordeon-item">
+          <button class="accordeon-btn" aria-expanded="false" aria-controls="faq-4">
+            Puis-je retourner un produit qui ne me convient pas ?
+            <span class="icone" aria-hidden="true">+</span>
+          </button>
+          <div class="accordeon-contenu" id="faq-4" role="region">
+            <p>Oui, vous disposez de 7 jours après la livraison pour nous retourner un produit en état neuf, dans son emballage d'origine. Les frais de retour sont à votre charge sauf en cas de défaut constaté à la livraison.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="titre-similaires" style="margin-bottom:3rem">
+      <h2 id="titre-similaires" style="margin-bottom:1.5rem">Produits similaires</h2>
+      <div class="similaires-grille" id="similaires-grille" aria-live="polite"></div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-grille">
+      <div class="footer-col">
+        <div class="footer-logo"><strong>TechBF</strong></div>
+        <p>Votre boutique high-tech de confiance à Ouagadougou.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <a href="index.html">Accueil</a>
+        <a href="catalogue.html">Catalogue</a>
+        <a href="panier.html">Mon panier</a>
+        <a href="contact.html">Commander</a>
+      </div>
+      <div class="footer-col">
+        <h4>Catégories</h4>
+        <a href="catalogue.html?categorie=informatique">Informatique</a>
+        <a href="catalogue.html?categorie=telephonie">Téléphonie</a>
+        <a href="catalogue.html?categorie=audio">Audio</a>
+        <a href="catalogue.html?categorie=accessoires">Accessoires</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <p>Ouagadougou, Burkina Faso</p>
+        <p>+226 XX XX XX XX</p>
+        <p>contact@techbf.bf</p>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bas">
+    <div class="container">© 2026 TechBF — Tous droits réservés</div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+let quantite = 1;
+
+document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const id = parseInt(params.get('id'));
+  const produit = PRODUITS.find(p => p.id === id) || PRODUITS[0];
+
+  document.title = `${produit.nom} — TechBF`;
+  document.getElementById('breadcrumb-nom').textContent = produit.nom;
+  document.getElementById('produit-nom').textContent = produit.nom;
+  document.getElementById('produit-prix').textContent = formaterPrix(produit.prix);
+  document.getElementById('produit-description').textContent = produit.description;
+  document.getElementById('tab-desc-texte').textContent = produit.description;
+
+  // Image grande
+  const imgZone = document.getElementById('produit-img-grande');
+  if (produit.image) {
+    const img = document.createElement('img');
+    img.src = produit.image;
+    img.alt = produit.nom;
+    img.className = 'produit-img-principale';
+    imgZone.appendChild(img);
+  }
+
+  const elAncienPrix = document.getElementById('produit-ancien-prix');
+  if (produit.ancienPrix) {
+    elAncienPrix.textContent = formaterPrix(produit.ancienPrix);
+    elAncienPrix.style.display = 'inline';
+  } else {
+    elAncienPrix.style.display = 'none';
+  }
+
+  const elBadges = document.getElementById('produit-badges');
+  if (produit.badge) {
+    const b = document.createElement('span');
+    b.className = `badge badge--${produit.badge.toLowerCase()}`;
+    b.textContent = produit.badge;
+    elBadges.appendChild(b);
+  }
+
+  const tbody = document.querySelector('#specs-table tbody');
+  if (produit.specs) {
+    Object.entries(produit.specs).forEach(([cle, val]) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${cle.replace(/_/g,' ')}</td><td>${val}</td>`;
+      tbody.appendChild(tr);
+    });
+  }
+
+  const valAffichee = document.getElementById('quantite-val');
+  document.getElementById('btn-moins').addEventListener('click', () => {
+    if (quantite > 1) { quantite--; valAffichee.textContent = quantite; }
+  });
+  document.getElementById('btn-plus').addEventListener('click', () => {
+    quantite++;
+    valAffichee.textContent = quantite;
+  });
+
+  document.getElementById('btn-ajouter-panier').addEventListener('click', () => {
+    ajouterAuPanier(produit.id, quantite);
+    const btn = document.getElementById('btn-ajouter-panier');
+    btn.textContent = 'Ajouté au panier !';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.textContent = 'Ajouter au panier';
+      btn.disabled = false;
+    }, 2000);
+  });
+
+  const similaires = PRODUITS.filter(p => p.categorie === produit.categorie && p.id !== produit.id).slice(0, 4);
+  const grilleSimil = document.getElementById('similaires-grille');
+  if (similaires.length > 0) {
+    similaires.forEach(p => grilleSimil.appendChild(genererCardProduit(p)));
+  } else {
+    grilleSimil.innerHTML = '<p style="color:var(--couleur-texte-leger)">Aucun produit similaire disponible.</p>';
+  }
+
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.remove('actif');
+        b.setAttribute('aria-selected', 'false');
+      });
+      document.querySelectorAll('.tab-panneau').forEach(p => p.classList.remove('actif'));
+      btn.classList.add('actif');
+      btn.setAttribute('aria-selected', 'true');
+      const cible = document.getElementById(btn.getAttribute('aria-controls'));
+      if (cible) cible.classList.add('actif');
+    });
+  });
+
+  document.querySelectorAll('.accordeon-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const ouvert = btn.getAttribute('aria-expanded') === 'true';
+      document.querySelectorAll('.accordeon-btn').forEach(b => {
+        b.setAttribute('aria-expanded', 'false');
+        const contenu = document.getElementById(b.getAttribute('aria-controls'));
+        if (contenu) contenu.classList.remove('ouvert');
+      });
+      if (!ouvert) {
+        btn.setAttribute('aria-expanded', 'true');
+        const contenu = document.getElementById(btn.getAttribute('aria-controls'));
+        if (contenu) contenu.classList.add('ouvert');
+      }
+    });
+  });
+});
+</script>
+</body>
+</html>
