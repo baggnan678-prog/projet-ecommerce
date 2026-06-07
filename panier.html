@@ -1,4 +1,32 @@
 <!DOCTYPE html>
+<!--
+  ============================================================
+   panier.html — Page du panier d'achats
+  ============================================================
+   Cette page affiche les articles que l'utilisateur a ajoutés
+   au panier depuis le catalogue ou les pages produit.
+
+   Deux états possibles selon le contenu du panier :
+     - Panier VIDE  → Affiche le message "Votre panier est vide"
+                      avec un lien vers le catalogue
+     - Panier PLEIN → Affiche le tableau des articles avec :
+                        - image + nom + prix unitaire
+                        - contrôles de quantité (− / +)
+                        - sous-total par article
+                        - bouton supprimer (×)
+                      + Résumé de commande (sous-total, livraison, total)
+                      + Bouton "Commander"
+
+   Modales de confirmation :
+     - modal-suppression → demande confirmation avant de supprimer un article
+     - modal-vider       → demande confirmation avant de vider tout le panier
+
+   Scripts chargés :
+     - data.js   → PRODUITS (pour les images/noms si nécessaire)
+     - main.js   → getPanier(), sauvegarderPanier(), formaterPrix()...
+     - panier.js → toute la logique de la page panier
+  ============================================================
+-->
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
@@ -10,6 +38,10 @@
 </head>
 <body>
 
+<!-- ============================================================
+     NAVBAR (identique sur toutes les pages)
+     "active" est sur le lien Panier + aria-current="page"
+     ============================================================ -->
 <nav class="navbar" role="navigation" aria-label="Navigation principale">
   <div class="container">
     <a href="index.html" class="navbar-logo" aria-label="TechBF — Accueil">
@@ -23,6 +55,7 @@
       <li><a href="catalogue.html">Catalogue</a></li>
       <li><a href="contact.html">Contact</a></li>
       <li>
+        <!-- aria-current="page" : indique aux lecteurs d'écran que c'est la page actuelle -->
         <a href="panier.html" class="nav-panier active" aria-label="Panier" aria-current="page">
           <span class="panier-icone">Panier</span>
           <span class="panier-compteur" aria-live="polite">0</span>
@@ -32,23 +65,54 @@
   </div>
 </nav>
 
+<!-- ============================================================
+     CONTENU PRINCIPAL
+     ============================================================ -->
 <main>
+
+  <!-- ── En-tête de la page panier ────────────────────────────────────────────
+       Affiche le titre et le nombre d'articles.
+       #nb-articles est mis à jour par calculerTotaux() dans panier.js.
+       aria-live="polite" : annonce les changements aux lecteurs d'écran.
+       Le bouton "Vider le panier" déclenche ouvrirModalVider() dans panier.js.
+       ──────────────────────────────────────────────────────────────────────── -->
   <header class="panier-header">
     <div class="container">
+      <!-- Le span #nb-articles affiche "3 articles", "1 article", etc. -->
       <h1>Mon panier — <span id="nb-articles" aria-live="polite">0 article</span></h1>
+      <!-- Bouton rouge pour vider tout le panier (déclenche une modale de confirmation) -->
       <button class="btn btn--danger" id="btn-vider" aria-label="Vider tout le panier">Vider le panier</button>
     </div>
   </header>
 
+  <!-- ── Zone "Panier vide" ─────────────────────────────────────────────────
+       Affichée quand le panier est vide.
+       Cachée par panier.js quand des articles sont présents.
+       role="status" : le lecteur d'écran annonce ce message si le panier se vide.
+       ──────────────────────────────────────────────────────────────────────── -->
   <div class="panier-vide" id="panier-vide" role="status" aria-live="polite">
     <h2>Votre panier est vide</h2>
     <p>Ajoutez des produits depuis notre catalogue.</p>
     <a href="catalogue.html" class="btn btn--primaire">Aller au catalogue</a>
   </div>
 
+  <!-- ── Zone "Panier plein" ───────────────────────────────────────────────────
+       Cachée par défaut (display:none).
+       Affichée par panier.js quand le panier contient des articles.
+       Contient :
+         - Le tableau des articles (#panier-corps est rempli par panier.js)
+         - Le résumé de commande (sous-total, livraison, total)
+         - Les boutons "Continuer les achats" et "Commander"
+       ──────────────────────────────────────────────────────────────────────── -->
   <div id="panier-plein" style="display:none">
     <div class="container">
       <div class="panier-layout">
+
+        <!-- ── Colonne gauche : tableau des articles ─────────────────────────
+             Le <tbody id="panier-corps"> est VIDE dans le HTML.
+             Il est rempli dynamiquement par afficherPanier() dans panier.js.
+             Chaque ligne contient : produit | prix unitaire | quantité | sous-total | ×
+             ────────────────────────────────────────────────────────────────── -->
         <div>
           <div class="panier-tableau-wrap">
             <table class="panier-tableau" aria-label="Articles dans le panier">
@@ -58,54 +122,92 @@
                   <th scope="col">Prix unitaire</th>
                   <th scope="col">Quantité</th>
                   <th scope="col">Sous-total</th>
+                  <!-- En-tête de la colonne "Supprimer" caché visuellement
+                       mais lu par les lecteurs d'écran -->
                   <th scope="col"><span class="sr-only">Supprimer</span></th>
                 </tr>
               </thead>
+              <!-- Corps du tableau : vide, rempli par panier.js -->
               <tbody id="panier-corps"></tbody>
             </table>
           </div>
+          <!-- Lien pour retourner au catalogue sans commander -->
           <div style="margin-top:1rem">
             <a href="catalogue.html" class="btn btn--secondaire">Continuer les achats</a>
           </div>
         </div>
 
+        <!-- ── Colonne droite : résumé de commande ────────────────────────────
+             Affiche le sous-total, les frais de livraison et le total.
+             Ces valeurs sont mises à jour par calculerTotaux() dans panier.js.
+             aria-live="polite" sur chaque montant : annonce les changements.
+             ────────────────────────────────────────────────────────────────── -->
         <aside class="resume-commande" aria-label="Résumé de la commande">
           <h3>Résumé</h3>
+          <!-- Sous-total : somme des (prix × quantité) de tous les articles -->
           <div class="resume-ligne">
             <span>Sous-total</span>
             <span id="sous-total" aria-live="polite">0 FCFA</span>
           </div>
+          <!-- Frais de livraison fixes : 5 000 FCFA (ou "—" si panier vide) -->
           <div class="resume-ligne">
             <span>Frais de livraison</span>
             <span id="frais-livraison" aria-live="polite">5 000 FCFA</span>
           </div>
+          <!-- Total général : sous-total + livraison -->
           <div class="resume-ligne resume-ligne--total">
             <span>Total</span>
             <span id="total-general" aria-live="polite">0 FCFA</span>
           </div>
+          <!-- Bouton Commander : redirige vers contact.html si le panier n'est pas vide -->
           <div class="resume-actions">
             <button class="btn btn--primaire" id="btn-commander">Commander</button>
           </div>
+          <!-- Note rassurante pour l'utilisateur -->
           <p style="font-size:.8rem;color:var(--couleur-texte-leger);margin-top:.75rem;text-align:center">
             Paiement sécurisé · Livraison à Ouagadougou
           </p>
         </aside>
-      </div>
+
+      </div><!-- fin .panier-layout -->
     </div>
-  </div>
+  </div><!-- fin #panier-plein -->
+
 </main>
 
+<!-- ============================================================
+     MODALES DE CONFIRMATION
+     ============================================================
+     Les modales sont des boîtes de dialogue superposées à la page.
+     Elles demandent confirmation avant une action irréversible.
+
+     Structure d'une modale :
+       .modal          → fond sombre semi-transparent (overlay)
+       .modal-boite    → boîte blanche centrale avec le message
+       .modal-actions  → boutons Confirmer / Annuler
+
+     Attributs d'accessibilité :
+       role="dialog"          → indique que c'est une boîte de dialogue
+       aria-modal="true"      → indique que le reste de la page est inaccessible
+       aria-labelledby="..."  → lie la modale à son titre
+       aria-hidden="true"     → caché aux lecteurs d'écran quand fermé
+     ============================================================ -->
+
+<!-- ── Modale 1 : Confirmation de suppression d'un article ────────────────── -->
 <div class="modal" id="modal-suppression" role="dialog" aria-modal="true" aria-labelledby="modal-suppr-titre" aria-hidden="true">
   <div class="modal-boite">
     <h3 id="modal-suppr-titre">Supprimer cet article ?</h3>
     <p>Cet article sera retiré de votre panier.</p>
     <div class="modal-actions">
+      <!-- data-focus : le focus est placé sur ce bouton à l'ouverture de la modale
+           (voir ouvrirModalSuppression() dans panier.js) -->
       <button class="btn btn--danger" id="modal-suppr-confirmer" data-focus>Oui, supprimer</button>
       <button class="btn btn--secondaire" id="modal-suppr-annuler">Annuler</button>
     </div>
   </div>
 </div>
 
+<!-- ── Modale 2 : Confirmation de vidage du panier ────────────────────────── -->
 <div class="modal" id="modal-vider" role="dialog" aria-modal="true" aria-labelledby="modal-vider-titre" aria-hidden="true">
   <div class="modal-boite">
     <h3 id="modal-vider-titre">Vider le panier ?</h3>
@@ -117,6 +219,9 @@
   </div>
 </div>
 
+<!-- ============================================================
+     FOOTER (identique sur toutes les pages)
+     ============================================================ -->
 <footer>
   <div class="container">
     <div class="footer-grille">
@@ -150,8 +255,18 @@
   </div>
 </footer>
 
-<script src="js/data.js"></script>
-<script src="js/main.js"></script>
-<script src="js/panier.js"></script>
+<!-- ============================================================
+     SCRIPTS JAVASCRIPT
+     ============================================================
+     Ordre de chargement :
+       1. data.js   → PRODUITS (nécessaire si panier.js a besoin des données produit)
+       2. main.js   → getPanier(), sauvegarderPanier(), mettreAJourCompteurNavbar(),
+                       formaterPrix() → toutes utilisées par panier.js
+       3. panier.js → toute la logique de la page (afficher, modifier, supprimer...)
+                       Déclenche afficherPanier() dans son DOMContentLoaded
+     ============================================================ -->
+<script src="js/data.js"></script>   <!-- Données produits -->
+<script src="js/main.js"></script>   <!-- Fonctions partagées -->
+<script src="js/panier.js"></script> <!-- Logique complète du panier -->
 </body>
 </html>

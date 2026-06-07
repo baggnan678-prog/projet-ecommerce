@@ -1,7 +1,29 @@
 <!DOCTYPE html>
+<!--
+  ============================================================
+   catalogue.html — Page catalogue (liste des produits)
+  ============================================================
+   Cette page affiche tous les produits disponibles dans la boutique.
+   L'utilisateur peut filtrer, rechercher et trier les produits.
+
+   Fonctionnalités :
+     - Barre de recherche en temps réel (filtre par nom et description)
+     - Boutons de filtre par catégorie (Tous / Informatique / Téléphonie / Audio / Accessoires)
+     - Boutons de tri par prix (croissant / décroissant)
+     - Compteur de résultats ("X produit(s) trouvé(s)")
+     - Message "Aucun produit trouvé" si aucun résultat
+
+   Scripts chargés (dans l'ordre) :
+     - data.js      → définit PRODUITS
+     - main.js      → fonctions partagées
+     - catalogue.js → logique de filtrage, recherche, tri
+     - Script inline → lit le paramètre URL ?categorie= pour pré-filtrer
+  ============================================================
+-->
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <!-- Viewport : nécessaire pour le responsive (adaptation mobile) -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Catalogue — TechBF</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -10,6 +32,10 @@
 </head>
 <body>
 
+<!-- ============================================================
+     NAVBAR — Barre de navigation (identique sur toutes les pages)
+     "active" est sur "Catalogue" pour indiquer la page courante
+     ============================================================ -->
 <nav class="navbar" role="navigation" aria-label="Navigation principale">
   <div class="container">
     <a href="index.html" class="navbar-logo" aria-label="TechBF — Accueil">
@@ -20,7 +46,7 @@
     </button>
     <ul class="nav-links" id="nav-links" role="list">
       <li><a href="index.html">Accueil</a></li>
-      <li><a href="catalogue.html" class="active">Catalogue</a></li>
+      <li><a href="catalogue.html" class="active">Catalogue</a></li>  <!-- Page courante -->
       <li><a href="contact.html">Contact</a></li>
       <li>
         <a href="panier.html" class="nav-panier" aria-label="Panier">
@@ -32,7 +58,14 @@
   </div>
 </nav>
 
+<!-- ============================================================
+     CONTENU PRINCIPAL
+     ============================================================ -->
 <main>
+
+  <!-- ── En-tête du catalogue ─────────────────────────────────────────────────
+       Bandeau bleu en haut de la page avec le titre "Notre catalogue".
+       ──────────────────────────────────────────────────────────────────────── -->
   <header class="catalogue-header">
     <div class="container">
       <h1>Notre catalogue</h1>
@@ -40,14 +73,44 @@
     </div>
   </header>
 
+  <!-- ── Barre de filtres ─────────────────────────────────────────────────────
+       Zone contenant TOUS les contrôles de filtrage :
+         - Champ de recherche texte (id="recherche")
+         - Boutons de filtre par catégorie (data-categorie="...")
+         - Boutons de tri (data-tri="asc" ou data-tri="desc")
+         - Compteur de résultats (id="compteur-resultats")
+
+       Les attributs data-categorie et data-tri sont lus par catalogue.js
+       pour savoir quel filtre appliquer.
+
+       role="search" : indique aux lecteurs d'écran que c'est une zone de recherche
+       ──────────────────────────────────────────────────────────────────────── -->
   <div class="barre-filtres" role="search" aria-label="Filtres et recherche">
     <div class="container">
       <div class="filtres-internes">
+
+        <!-- ── Champ de recherche ────────────────────────────────────────────
+             L'utilisateur tape ici et les résultats se filtrent en temps réel.
+             Le bouton × (id="effacer-recherche") efface le texte saisi.
+             type="search" : indique au navigateur que c'est un champ de recherche
+                             (peut afficher une croix native pour effacer)
+             class="sr-only" : "screen reader only", le label est invisible
+                               mais lu par les lecteurs d'écran
+             ────────────────────────────────────────────────────────────────── -->
         <div class="recherche-wrap">
           <label for="recherche" class="sr-only">Rechercher un produit</label>
           <input type="search" id="recherche" placeholder="Rechercher un produit…" autocomplete="off" aria-label="Rechercher un produit">
+          <!-- Bouton pour effacer la recherche -->
           <button class="recherche-icone" id="effacer-recherche" aria-label="Effacer la recherche" title="Effacer">×</button>
         </div>
+
+        <!-- ── Boutons de filtre par catégorie ──────────────────────────────
+             Chaque bouton a un attribut data-categorie qui correspond
+             à la propriété "categorie" des objets dans PRODUITS (data.js).
+             Le bouton "Tous" a data-categorie="tous" → affiche tout.
+             La classe "actif" sur "Tous" indique le filtre par défaut.
+             aria-pressed : indique si le bouton est "enfoncé" (actif)
+             ────────────────────────────────────────────────────────────────── -->
         <div class="filtres-cats" role="group" aria-label="Filtrer par catégorie">
           <button class="btn-filtre actif" data-categorie="tous" aria-pressed="true">Tous</button>
           <button class="btn-filtre" data-categorie="informatique" aria-pressed="false">Informatique</button>
@@ -55,30 +118,62 @@
           <button class="btn-filtre" data-categorie="audio" aria-pressed="false">Audio</button>
           <button class="btn-filtre" data-categorie="accessoires" aria-pressed="false">Accessoires</button>
         </div>
-      </div>
+
+      </div><!-- fin .filtres-internes -->
+
+      <!-- ── Ligne inférieure : tri + compteur ─────────────────────────────── -->
       <div class="filtres-bas">
+
+        <!-- Boutons de tri par prix
+             data-tri="asc"  → prix croissant (du moins cher au plus cher)
+             data-tri="desc" → prix décroissant (du plus cher au moins cher) -->
         <div class="filtres-tri" role="group" aria-label="Trier par prix">
           <button class="btn-filtre" data-tri="asc" aria-pressed="false">Prix croissant</button>
           <button class="btn-filtre" data-tri="desc" aria-pressed="false">Prix décroissant</button>
         </div>
-        <p id="compteur-resultats" aria-live="polite" aria-atomic="true">12 produit(s) trouvé(s)</p>
-      </div>
-    </div>
-  </div>
 
+        <!-- Compteur de résultats, mis à jour par afficherResultats() dans catalogue.js
+             aria-live="polite" : annonce les changements aux lecteurs d'écran sans interruption
+             aria-atomic="true" : lit tout le contenu du paragraphe à chaque mise à jour -->
+        <p id="compteur-resultats" aria-live="polite" aria-atomic="true">12 produit(s) trouvé(s)</p>
+
+      </div><!-- fin .filtres-bas -->
+    </div>
+  </div><!-- fin .barre-filtres -->
+
+  <!-- ── Section principale : grille des produits ──────────────────────────────
+       La grille #grille-produits est VIDE dans le HTML.
+       Elle est remplie dynamiquement par catalogue.js au chargement de la page.
+       ──────────────────────────────────────────────────────────────────────── -->
   <section class="catalogue-contenu" aria-labelledby="titre-catalogue">
     <div class="container">
+      <!-- Titre caché visuellement mais présent pour les lecteurs d'écran -->
       <h2 id="titre-catalogue" class="sr-only">Liste des produits</h2>
+
+      <!-- Grille qui sera remplie par genererCardProduit() via catalogue.js -->
       <div class="grille-produits" id="grille-produits" aria-live="polite" aria-label="Produits"></div>
+
+      <!-- Message affiché si aucun produit ne correspond à la recherche/au filtre
+           Il est caché par défaut (display:none via CSS) et affiché par catalogue.js
+           Le bouton "Réinitialiser" vide le champ de recherche via dispatchEvent -->
       <div class="message-vide" id="message-vide" role="status">
         <span class="icone-vide" aria-hidden="true"></span>
         <p>Aucun produit trouvé pour cette recherche.</p>
+        <!--
+          Onclick : vide le champ de recherche et déclenche l'événement 'input'
+          manuellement pour que catalogue.js réaffiche tous les produits.
+          dispatchEvent(new Event('input')) simule une frappe de l'utilisateur.
+        -->
         <button class="btn btn--secondaire" onclick="document.getElementById('recherche').value=''; document.getElementById('recherche').dispatchEvent(new Event('input'));">Réinitialiser la recherche</button>
       </div>
     </div>
   </section>
+
 </main>
 
+<!-- ============================================================
+     FOOTER — Pied de page (identique sur toutes les pages)
+     ============================================================ -->
 <footer>
   <div class="container">
     <div class="footer-grille">
@@ -113,26 +208,69 @@
   </div>
 </footer>
 
-<script src="js/data.js"></script>
-<script src="js/main.js"></script>
-<script src="js/catalogue.js"></script>
+<!-- ============================================================
+     SCRIPTS JAVASCRIPT
+     ============================================================
+     Ordre de chargement obligatoire :
+       1. data.js      → PRODUITS doit exister avant tout
+       2. main.js      → genererCardProduit(), getPanier()... utilisés par catalogue.js
+       3. catalogue.js → filtrerEtAfficher(), initFiltres()...
+       4. Script inline → lit l'URL et pré-sélectionne une catégorie si nécessaire
+     ============================================================ -->
+<script src="js/data.js"></script>      <!-- Données des produits -->
+<script src="js/main.js"></script>      <!-- Fonctions partagées (navbar, panier, cards) -->
+<script src="js/catalogue.js"></script> <!-- Logique de filtrage et d'affichage -->
 <script>
+  /**
+   * Script inline — Pré-sélection de catégorie via l'URL
+   * -----------------------------------------------------
+   * Quand on arrive sur catalogue.html depuis la page d'accueil
+   * (ex : en cliquant sur "Téléphonie"), l'URL contient un paramètre :
+   * catalogue.html?categorie=telephonie
+   *
+   * Ce script lit ce paramètre et active automatiquement le bon filtre.
+   *
+   * Exemple d'URL : catalogue.html?categorie=audio
+   *   → params.get('categorie') retourne "audio"
+   *   → On cherche le bouton avec data-categorie="audio"
+   *   → On simule un clic sur ce bouton pour activer le filtre
+   *
+   * Si aucun paramètre n'est présent dans l'URL → rien ne se passe,
+   * tous les produits sont affichés (comportement par défaut de catalogue.js).
+   */
   document.addEventListener('DOMContentLoaded', () => {
+    // URLSearchParams lit les paramètres de l'URL (la partie après le ?)
     const params = new URLSearchParams(window.location.search);
-    const cat = params.get('categorie');
+
+    // Récupère la valeur du paramètre "categorie" dans l'URL
+    const cat = params.get('categorie'); // ex : "telephonie", "audio", ou null si absent
+
     if (cat) {
+      // Cherche le bouton de filtre correspondant à la catégorie
+      // Exemple : document.querySelector('[data-categorie="audio"]')
       const btn = document.querySelector(`[data-categorie="${cat}"]`);
+
       if (btn) {
+        // Retire la classe "actif" de TOUS les boutons de catégorie
         document.querySelectorAll('[data-categorie]').forEach(b => {
           b.classList.remove('actif');
           b.setAttribute('aria-pressed', 'false');
         });
+
+        // Active le bouton correspondant à la catégorie de l'URL
         btn.classList.add('actif');
         btn.setAttribute('aria-pressed', 'true');
+
+        // Met à jour la variable categorieActive dans catalogue.js
+        // (cette variable est globale, définie dans catalogue.js)
         categorieActive = cat;
+
+        // Relance l'affichage avec le filtre de catégorie pré-sélectionné
         filtrerEtAfficher();
       }
     }
+    // Si cat est null (pas de paramètre dans l'URL), catalogue.js a déjà
+    // affiché tous les produits dans son propre DOMContentLoaded
   });
 </script>
 </body>

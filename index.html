@@ -1,29 +1,70 @@
 <!DOCTYPE html>
+<!--
+  ============================================================
+   index.html — Page d'accueil de la boutique TechBF
+  ============================================================
+   Cette page est le point d'entrée du site.
+   Elle contient 3 grandes sections :
+     1. Hero         → Bannière principale avec slogan et boutons d'appel à l'action
+     2. Catégories   → Grille des 6 catégories de produits
+     3. Vedettes     → 6 produits mis en avant (sélectionnés automatiquement)
+     4. Bandeau promo → Bande d'appel aux promotions
+
+   Scripts chargés (dans l'ordre) :
+     - data.js  → définit le tableau PRODUITS (12 produits)
+     - main.js  → fonctions partagées (navbar, panier, genererCardProduit...)
+     - Script inline → sélectionne et affiche les 6 produits vedettes
+  ============================================================
+-->
 <html lang="fr">
 <head>
+  <!-- Encodage des caractères : UTF-8 supporte les accents, symboles... -->
   <meta charset="UTF-8">
+  <!-- Viewport : indispensable pour que le site s'adapte aux écrans mobiles -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Titre affiché dans l'onglet du navigateur -->
   <title>TechBF — Boutique High-Tech Burkina Faso</title>
+  <!-- Description pour les moteurs de recherche (Google, Bing...) -->
   <meta name="description" content="TechBF — Votre boutique d'électronique et d'accessoires tech à Ouagadougou.">
+  <!-- Préconnexion à Google Fonts pour accélérer le chargement des polices -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <!-- Polices de caractères : Sora (titres) + Inter (textes courants) -->
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Feuille de style principale du site -->
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
+<!-- ============================================================
+     NAVBAR — Barre de navigation principale
+     ============================================================
+     Contient : logo TechBF, menu de navigation, icône Panier avec compteur.
+     Sur mobile : le menu se cache et un bouton hamburger (☰) apparaît.
+     La classe "burger" et les attributs aria-* sont utilisés par initNavbar()
+     dans main.js pour gérer l'ouverture/fermeture du menu.
+     ============================================================ -->
 <nav class="navbar" role="navigation" aria-label="Navigation principale">
   <div class="container">
+    <!-- Logo cliquable qui ramène à l'accueil -->
     <a href="index.html" class="navbar-logo" aria-label="TechBF — Accueil">
       Tech<span>BF</span>
     </a>
+    <!-- Bouton hamburger (visible uniquement sur mobile via CSS)
+         aria-controls : indique quel élément il contrôle (le menu)
+         aria-expanded : "true" si le menu est ouvert, "false" si fermé -->
     <button class="burger" id="burger" aria-controls="nav-links" aria-expanded="false" aria-label="Ouvrir le menu">
+      <!-- Les 3 <span> représentent les 3 traits du burger -->
       <span></span><span></span><span></span>
     </button>
+    <!-- Menu de navigation (liste de liens) -->
     <ul class="nav-links" id="nav-links" role="list">
-      <li><a href="index.html" class="active">Accueil</a></li>
+      <li><a href="index.html" class="active">Accueil</a></li>  <!-- "active" = page courante -->
       <li><a href="catalogue.html">Catalogue</a></li>
       <li><a href="contact.html">Contact</a></li>
       <li>
+        <!-- Lien vers le panier avec le compteur d'articles
+             .panier-compteur est mis à jour par mettreAJourCompteurNavbar() dans main.js
+             aria-live="polite" : le lecteur d'écran annonce les changements de valeur -->
         <a href="panier.html" class="nav-panier" aria-label="Panier">
           <span class="panier-icone">Panier</span>
           <span class="panier-compteur" aria-live="polite" aria-label="Articles dans le panier">0</span>
@@ -33,30 +74,57 @@
   </div>
 </nav>
 
+<!-- ============================================================
+     CONTENU PRINCIPAL DE LA PAGE
+     ============================================================ -->
 <main>
+
+  <!-- ── Section 1 : HERO (bannière principale) ─────────────────────────────
+       Grande bannière colorée qui accueille les visiteurs.
+       Contient : slogan, sous-titre, 2 boutons d'action.
+       Les éléments hero-decor sont purement décoratifs (cercles en arrière-plan).
+       ──────────────────────────────────────────────────────────────────────── -->
   <section class="hero" aria-labelledby="hero-titre">
+    <!-- Éléments décoratifs visuels (cercles/bulles en arrière-plan)
+         aria-hidden="true" : ignorés par les lecteurs d'écran -->
     <div class="hero-decor hero-decor--1" aria-hidden="true"></div>
     <div class="hero-decor hero-decor--2" aria-hidden="true"></div>
     <div class="hero-contenu">
+      <!-- Badge informatif au-dessus du titre -->
       <div class="hero-badge" aria-hidden="true">Livraison à Ouagadougou</div>
+      <!-- Titre principal de la page (h1 = le plus important pour le SEO) -->
       <h1 id="hero-titre">La tech au cœur du <span>Burkina</span></h1>
       <p>Smartphones, ordinateurs, accessoires — des produits de qualité aux meilleurs prix FCFA.</p>
+      <!-- Boutons d'appel à l'action -->
       <div class="hero-actions">
+        <!-- Bouton principal : va directement au catalogue -->
         <a href="catalogue.html" class="btn btn--primaire">Voir le catalogue</a>
+        <!-- Bouton secondaire : fait défiler la page vers la section catégories
+             Le # dans l'URL fait référence à l'id="categories" plus bas -->
         <a href="#categories" class="btn btn--ghost">Nos catégories</a>
       </div>
     </div>
   </section>
 
+  <!-- ── Section 2 : CATÉGORIES ──────────────────────────────────────────────
+       Grille de 6 cartes représentant les catégories de produits.
+       Chaque carte est un lien vers le catalogue filtré par catégorie.
+       Le paramètre ?categorie=xxx dans l'URL est lu par le script dans
+       catalogue.html pour pré-sélectionner le bon filtre.
+       ──────────────────────────────────────────────────────────────────────── -->
   <section class="section" id="categories" aria-labelledby="titre-cats">
     <div class="container">
       <div class="section-titre">
         <h2 id="titre-cats">Nos catégories</h2>
         <p>Tout ce dont vous avez besoin en un seul endroit</p>
       </div>
+      <!-- Grille des catégories (liste HTML pour la sémantique) -->
       <ul class="grille-categories" role="list">
         <li>
+          <!-- Lien vers le catalogue filtré sur "informatique" -->
           <a href="catalogue.html?categorie=informatique" class="card-categorie">
+            <!-- alt="" et aria-hidden="true" : l'image est décorative,
+                 le texte "Informatique" suffit pour les lecteurs d'écran -->
             <div class="cat-img-wrap"><img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=200&q=80" alt="" aria-hidden="true" loading="lazy"></div>
             <span class="cat-nom">Informatique</span>
           </a>
@@ -80,14 +148,17 @@
           </a>
         </li>
         <li>
+          <!-- Caméras → redirige vers "informatique" car elles sont dans cette catégorie -->
           <a href="catalogue.html?categorie=informatique" class="card-categorie">
             <div class="cat-img-wrap"><img src="https://images.unsplash.com/photo-1625275733-c74f5f82d548?w=200&q=80" alt="" aria-hidden="true" loading="lazy"></div>
             <span class="cat-nom">Caméras</span>
           </a>
         </li>
         <li>
+          <!-- Câbles → redirige vers le catalogue sans filtre (toutes catégories) -->
           <a href="catalogue.html" class="card-categorie">
             <div class="cat-img-wrap"><img src="https://images.unsplash.com/photo-1601524909162-ae8725290836?w=200&q=80" alt="" aria-hidden="true" loading="lazy"></div>
+            <!-- &amp; est l'entité HTML pour le caractère & -->
             <span class="cat-nom">Câbles &amp; Chargeurs</span>
           </a>
         </li>
@@ -95,16 +166,28 @@
     </div>
   </section>
 
+  <!-- ── Section 3 : PRODUITS VEDETTES ───────────────────────────────────────
+       Grille de 6 produits mis en avant sur la page d'accueil.
+       La grille est VIDE dans le HTML : elle est remplie dynamiquement
+       par le script JavaScript inline en bas de page.
+       aria-live="polite" : prévient les lecteurs d'écran quand le contenu change.
+       ──────────────────────────────────────────────────────────────────────── -->
   <section class="section section--grise" aria-labelledby="titre-vedettes">
     <div class="container">
       <div class="section-entete">
         <h2 id="titre-vedettes">Produits vedettes</h2>
+        <!-- Lien "Voir tout" → va au catalogue complet -->
         <a href="catalogue.html" class="btn btn--secondaire">Voir tout</a>
       </div>
+      <!-- Grille vide remplie par JavaScript (voir script en bas de page) -->
       <div class="grille-produits" id="grille-vedettes" aria-live="polite"></div>
     </div>
   </section>
 
+  <!-- ── Section 4 : BANDEAU PROMOTIONNEL ────────────────────────────────────
+       Bande d'accroche pour les promotions du mois.
+       Simple section statique avec texte et bouton.
+       ──────────────────────────────────────────────────────────────────────── -->
   <section class="bandeau-promo" aria-labelledby="titre-promo">
     <div class="container">
       <h2 id="titre-promo">Offre spéciale ce mois-ci !</h2>
@@ -112,15 +195,24 @@
       <a href="catalogue.html" class="btn btn--ghost">Voir les promotions</a>
     </div>
   </section>
+
 </main>
 
+<!-- ============================================================
+     FOOTER — Pied de page
+     ============================================================
+     Grille de 4 colonnes : présentation, navigation, catégories, contact.
+     Identique sur toutes les pages du site.
+     ============================================================ -->
 <footer>
   <div class="container">
     <div class="footer-grille">
+      <!-- Colonne 1 : Présentation de la boutique -->
       <div class="footer-col">
         <div class="footer-logo"><strong>TechBF</strong></div>
         <p>Votre boutique high-tech de confiance à Ouagadougou, Burkina Faso.</p>
       </div>
+      <!-- Colonne 2 : Liens de navigation rapide -->
       <div class="footer-col">
         <h4>Navigation</h4>
         <a href="index.html">Accueil</a>
@@ -128,6 +220,7 @@
         <a href="panier.html">Mon panier</a>
         <a href="contact.html">Commander</a>
       </div>
+      <!-- Colonne 3 : Raccourcis vers les catégories -->
       <div class="footer-col">
         <h4>Catégories</h4>
         <a href="catalogue.html?categorie=informatique">Informatique</a>
@@ -135,6 +228,7 @@
         <a href="catalogue.html?categorie=audio">Audio</a>
         <a href="catalogue.html?categorie=accessoires">Accessoires</a>
       </div>
+      <!-- Colonne 4 : Informations de contact -->
       <div class="footer-col">
         <h4>Contact</h4>
         <p>Ouagadougou, Burkina Faso</p>
@@ -143,17 +237,50 @@
       </div>
     </div>
   </div>
+  <!-- Barre inférieure avec copyright -->
   <div class="footer-bas">
     <div class="container">© 2026 TechBF — Tous droits réservés</div>
   </div>
 </footer>
 
-<script src="js/data.js"></script>
-<script src="js/main.js"></script>
+<!-- ============================================================
+     SCRIPTS JAVASCRIPT
+     ============================================================
+     L'ordre de chargement est important :
+       1. data.js  → doit être chargé EN PREMIER car il définit PRODUITS
+       2. main.js  → doit être chargé APRÈS data.js car il utilise PRODUITS
+       3. Script inline → doit être APRÈS main.js car il utilise genererCardProduit()
+     ============================================================ -->
+<script src="js/data.js"></script>   <!-- Définit le tableau PRODUITS avec les 12 produits -->
+<script src="js/main.js"></script>   <!-- Fonctions partagées : navbar, panier, genererCardProduit... -->
 <script>
+  /**
+   * Script inline — Affichage des produits vedettes
+   * -------------------------------------------------
+   * Ce script sélectionne 6 produits à mettre en avant sur la page d'accueil
+   * et les insère dans la grille #grille-vedettes.
+   *
+   * Critère de sélection :
+   *   Les produits avec un badge (PROMO ou NOUVEAU) sont mis en avant en premier.
+   *   On prend les 6 premiers de ce tri.
+   *
+   * Explication du tri :
+   *   (b.badge ? 1 : 0) - (a.badge ? 1 : 0)
+   *   → Si b a un badge ET a n'en a pas : 1 - 0 = 1 → b passe avant a (b monte)
+   *   → Si a a un badge ET b n'en a pas : 0 - 1 = -1 → a passe avant b (a monte)
+   *   → Si les deux ont (ou n'ont pas) un badge : 0 - 0 = 0 → ordre inchangé
+   */
   document.addEventListener('DOMContentLoaded', () => {
-    const vedettes = [...PRODUITS].sort((a, b) => (b.badge ? 1 : 0) - (a.badge ? 1 : 0)).slice(0, 6);
+    // Trie une copie de PRODUITS : les produits avec badge passent en premier
+    const vedettes = [...PRODUITS]
+      .sort((a, b) => (b.badge ? 1 : 0) - (a.badge ? 1 : 0))
+      .slice(0, 6); // Garde seulement les 6 premiers
+
+    // Récupère la grille HTML
     const grille = document.getElementById('grille-vedettes');
+
+    // Pour chaque produit vedette, génère une card et l'ajoute à la grille
+    // genererCardProduit() est défini dans main.js
     vedettes.forEach(p => grille.appendChild(genererCardProduit(p)));
   });
 </script>
